@@ -247,7 +247,7 @@ public class KitchenSinkController {
 		switch (text) {
 			case "hi": {
 				String userId = event.getSource().getUserId();
-				if (userId = 'U3e5883984c64efdc70c7afea2a2e9cf5') {
+				if (userId != null) {
 					this.replyText(replyToken, "hey cam");
 				} else {
 					this.replyText(replyToken, "bye");
