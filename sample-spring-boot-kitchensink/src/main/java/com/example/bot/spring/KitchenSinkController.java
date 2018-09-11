@@ -247,11 +247,11 @@ public class KitchenSinkController {
         switch (text) {
             case "profile": {
                 String userId = event.getSource().getUserId();
-                if (userId !=null) {
+                if (userId != null) {
                     lineMessagingClient
                             .getProfile(userId)
                             .whenComplete((profile, throwable) -> {
-                                if (throwable.Equals(U3e5883984c64efdc70c7afea2a2e9cf5)) {
+                                if (throwable != null) {
                                     this.replyText(replyToken, throwable.getMessage());
                                     return;
                                 }
