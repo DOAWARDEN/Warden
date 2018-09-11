@@ -426,15 +426,6 @@ public class KitchenSinkController {
                 break;
             default:
                 log.info("Returns echo message {}: {}", replyToken, text);
-<<<<<<< HEAD
-=======
-                this.replyText(
-					{
-					"type": "text",
-					"text": ""
-					}
-				);
->>>>>>> 5e19a3e7699f8015a9811b583fa5bd3948ae8fd0
                 break;
         }
     }
