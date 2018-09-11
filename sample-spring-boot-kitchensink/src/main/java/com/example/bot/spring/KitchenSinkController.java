@@ -427,11 +427,9 @@ public class KitchenSinkController {
             default:
                 log.info("Returns echo message {}: {}", replyToken, text);
                 this.replyText(
-					{
-					"type": "text",
-					"text": ""
-					}
-				);
+                        replyToken,
+                        text
+                );
                 break;
         }
     }
