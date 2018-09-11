@@ -239,6 +239,37 @@ public class KitchenSinkController {
         );
     }
 
+	private void handleTextMessageEvent (String replyToken, Event event, TextMessageEvent event){
+		String userId = event.getSource().getUserId();
+		if (userId = U3e5883984c64efdc70c7afea2a2e9cf5) {
+			this.replyText(replyToken,"Hello Cam");
+		} else {
+		this.replyText(replyToken,"fuck you");
+		}
+        break;
+		}
+		
+	private void handlTextContent (string replyToken, Event event, TextMessageContent content)
+			throws Exception {
+		String text = content.getText();
+		
+		log.info("got text from {}:  {}", replyToken, text);
+		switch (text) {
+			case "hi": {
+				String userId = event.getSource().getUserId();
+				if (userId = U3e5883984c64efdc70c7afea2a2e9cf5) {
+					this.replyText(replyToken, "hey cam");
+				} else {
+					this.replyText(replyToken, "bye");
+				}
+				break;
+			}
+            default:
+                log.info("Returns echo message {}: {}", replyToken, text);
+                break;
+		}
+	}
+			
     private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
         String text = content.getText();
