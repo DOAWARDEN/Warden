@@ -280,7 +280,7 @@ public class KitchenSinkController {
                                 this.reply(
                                         replyToken,
                                         Arrays.asList(new TextMessage(
-                                                              "Display name: " + profile.getDisplayName()),
+                                                              "Displayy name: " + profile.getDisplayName()),
                                                       new TextMessage("Status message: "
                                                                       + profile.getStatusMessage()))
                                 );
