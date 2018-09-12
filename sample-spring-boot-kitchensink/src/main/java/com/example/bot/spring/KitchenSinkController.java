@@ -114,14 +114,49 @@ public class KitchenSinkController {
 
     @EventMapping
     public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws IOException {
+        // You need to install ImageMagick
+        handleHeavyContent(
+                event.getReplyToken(),
+                event.getMessage().getId(),
+                responseBody -> {
+                    DownloadedContent jpg = saveContent("jpg", responseBody);
+                    DownloadedContent previewImg = createTempFile("jpg");
+                    system(
+                            "convert",
+                            "-resize", "240x",
+                            jpg.path.toString(),
+                            previewImg.path.toString());
+                    reply(event.getReplyToken(),
+                            new ImageMessage(jpg.getUri(), jpg.getUri()));
+                });
     }
 
     @EventMapping
     public void handleAudioMessageEvent(MessageEvent<AudioMessageContent> event) throws IOException {
+        handleHeavyContent(
+                event.getReplyToken(),
+                event.getMessage().getId(),
+                responseBody -> {
+                    DownloadedContent mp4 = saveContent("mp4", responseBody);
+                    reply(event.getReplyToken(), new AudioMessage(mp4.getUri(), 100));
+                });
     }
 
     @EventMapping
     public void handleVideoMessageEvent(MessageEvent<VideoMessageContent> event) throws IOException {
+        // You need to install ffmpeg and ImageMagick.
+        handleHeavyContent(
+                event.getReplyToken(),
+                event.getMessage().getId(),
+                responseBody -> {
+                    DownloadedContent mp4 = saveContent("mp4", responseBody);
+                    DownloadedContent previewImg = createTempFile("jpg");
+                    system("convert",
+                            mp4.path + "[0]",
+                            previewImg.path.toString());
+                    reply(event.getReplyToken(),
+                            new VideoMessage(mp4.getUri(), previewImg.uri));
+                });
     }
 
     @EventMapping
@@ -131,7 +166,8 @@ public class KitchenSinkController {
 
     @EventMapping
     public void handleFollowEvent(FollowEvent event) {
-        log.info("Followed this bot: {}", event);
+        String replyToken = event.getReplyToken();
+        this.replyText(replyToken, "Got followed event");
     }
 
     @EventMapping
@@ -142,12 +178,16 @@ public class KitchenSinkController {
 
     @EventMapping
     public void handlePostbackEvent(PostbackEvent event) {
-        log.info("Postback Event: {}", event);
+        String replyToken = event.getReplyToken();
+        this.replyText(replyToken,
+                "Got postback data " + event.getPostbackContent().getData() + ", param " + event
+                        .getPostbackContent().getParams().toString());
     }
 
     @EventMapping
     public void handleBeaconEvent(BeaconEvent event) {
-        log.info("Beacon Event : {}", event);
+        String replyToken = event.getReplyToken();
+        this.replyText(replyToken, "Got beacon message " + event.getBeacon().getHwid());
     }
 
     @EventMapping
