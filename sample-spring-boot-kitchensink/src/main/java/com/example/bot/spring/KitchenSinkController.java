@@ -215,16 +215,19 @@ public class KitchenSinkController {
                                         new TextMessage("Status message: "
                                                 + profile.getStatusMessage()))
                         );
+                    } else {
+                        this.replyText(replyToken, "Fuck your face");
                     }
-                } else{
-                    this.replyText(replyToken, "Fuck your face");
+                    break;
                 }
-                break;
+                default:
+                    log.info("Returns echo message {}: {}", replyToken, text);
+                    break;
             }
-            default:
-                log.info("Returns echo message {}: {}", replyToken, text);
-                break;
-            }
+        }
+        else {
+            this.replyText(replyToken, message:"fuck you")
+        }
     }
 
     private static String createUri(String path) {
