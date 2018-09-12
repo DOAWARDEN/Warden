@@ -194,7 +194,7 @@ public class KitchenSinkController {
     }
 
     private void handleSticker(String replyToken, StickerMessageContent content) {
-        break;
+        log.info("Beacon Event : {}", event);
     }
 
     private void handleTextContent(String replyToken, Event event, TextMessageContent content)
