@@ -204,9 +204,9 @@ public class KitchenSinkController {
         log.info("Got text message from {}: {}", replyToken, text);
         String userId = event.getSource().getUserId();
         if (userId == "U3e5883984c64efdc70c7afea2a2e9cf5") {
-            this.replyText(replyToken, message"I love you ");
+            this.replyText(replyToken, "I love you ");
         }
-        else.replyText(replyToken, message:"Fuck your face");
+        else.replyText(replyToken, "Fuck your face");
     }
 
     private static String createUri(String path) {
