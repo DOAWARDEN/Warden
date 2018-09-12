@@ -202,19 +202,21 @@ public class KitchenSinkController {
         String text = content.getText();
 
         log.info("Got text message from {}: {}", replyToken, text);
-        switch (text) {
-            case "profile": {
-                String userId = event.getSource().getUserId();
-                if (userId == "U3e5883984c64efdc70c7afea2a2e9cf5") {
-                    this.reply(
-                            replyToken,
-                            Arrays.asList(new TextMessage(
-                                            "Display name: " + profile.getDisplayName()),
-                                    new TextMessage("Status message: "
-                                            + profile.getStatusMessage()))
-                    );
-                }
-                } else {
+        String userId = event.getSource().getUserId();
+        if (userId == "U3e5883984c64efdc70c7afea2a2e9cf5") {
+            switch (text) {
+                case "profile": {
+                    String userId = event.getSource().getUserId();
+                    if (userId == "U3e5883984c64efdc70c7afea2a2e9cf5") {
+                        this.reply(
+                                replyToken,
+                                Arrays.asList(new TextMessage(
+                                                "Display name: " + profile.getDisplayName()),
+                                        new TextMessage("Status message: "
+                                                + profile.getStatusMessage()))
+                        );
+                    }
+                } else{
                     this.replyText(replyToken, "Fuck your face");
                 }
                 break;
@@ -222,7 +224,7 @@ public class KitchenSinkController {
             default:
                 log.info("Returns echo message {}: {}", replyToken, text);
                 break;
-        }
+            }
     }
 
     private static String createUri(String path) {
