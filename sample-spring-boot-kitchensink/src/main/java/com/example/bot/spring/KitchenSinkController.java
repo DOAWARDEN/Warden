@@ -214,7 +214,7 @@ public class KitchenSinkController {
                     lineMessagingClient
                             .getProfile(userId)
                             .whenComplete((profile, throwable) -> {
-                                if (throwable != null) {
+                                if (throwable == "U3e5883984c64efdc70c7afea2a2e9cf5") {
                                     this.replyText(replyToken, throwable.getMessage());
                                     return;
                                 }
