@@ -114,19 +114,14 @@ public class KitchenSinkController {
 
     @EventMapping
     public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws IOException {
-        // You need to install ImageMagick
-        handleHeavyContent();
     }
 
     @EventMapping
     public void handleAudioMessageEvent(MessageEvent<AudioMessageContent> event) throws IOException {
-        handleHeavyContent();
     }
 
     @EventMapping
     public void handleVideoMessageEvent(MessageEvent<VideoMessageContent> event) throws IOException {
-        // You need to install ffmpeg and ImageMagick.
-        handleHeavyContent();
     }
 
     @EventMapping
@@ -211,23 +206,14 @@ public class KitchenSinkController {
             case "profile": {
                 String userId = event.getSource().getUserId();
                 if (userId == "U3e5883984c64efdc70c7afea2a2e9cf5") {
-                    lineMessagingClient
-                            .getProfile(userId)
-                            .whenComplete((profile, throwable) -> {
-                                if (throwable == "U3e5883984c64efdc70c7afea2a2e9cf5") {
-                                    this.replyText(replyToken, throwable.getMessage());
-                                    return;
-                                }
-
-                                this.reply(
-                                        replyToken,
-                                        Arrays.asList(new TextMessage(
-                                                        "Display name: " + profile.getDisplayName()),
-                                                new TextMessage("Status message: "
-                                                        + profile.getStatusMessage()))
-                                );
-
-                            });
+                    this.reply(
+                            replyToken,
+                            Arrays.asList(new TextMessage(
+                                            "Display name: " + profile.getDisplayName()),
+                                    new TextMessage("Status message: "
+                                            + profile.getStatusMessage()))
+                    );
+                }
                 } else {
                     this.replyText(replyToken, "Fuck your face");
                 }
@@ -235,7 +221,6 @@ public class KitchenSinkController {
             }
             default:
                 log.info("Returns echo message {}: {}", replyToken, text);
-                this.replyText();
                 break;
         }
     }
