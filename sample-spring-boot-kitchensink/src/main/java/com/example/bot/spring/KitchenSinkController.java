@@ -217,7 +217,7 @@ public class KitchenSinkController {
         if (message.length() > 1000) {
             message = message.substring(0, 1000 - 2) + "……";
         }
-        this.reply(replyToken, new TextMessage(message));
+        this.reply(replyToken, new TextMessage("Hello"));
     }
 
     private void handleHeavyContent(String replyToken, String messageId,
@@ -244,10 +244,40 @@ public class KitchenSinkController {
         String text = content.getText();
 
         log.info("Got text message from {}: {}", replyToken, text);
-       /* switch (text) {
+        switch (text) {
+            case "profile": {
+                String userId = event.getSource().getUserId();
+                if (userId == "U3e5883984c64efdc70c7afea2a2e9cf5") {
+                    lineMessagingClient
+                            .getProfile(userId)
+                            .whenComplete((profile, throwable) -> {
+                                if (throwable != null) {
+                                    this.replyText(replyToken, throwable.getMessage());
+                                    return;
+                                }
 
+                                this.reply(
+                                        replyToken,
+                                        Arrays.asList(new TextMessage(
+                                                        "Display name: " + profile.getDisplayName()),
+                                                new TextMessage("Status message: "
+                                                        + profile.getStatusMessage()))
+                                );
+
+                            });
+                } else {
+                    this.replyText(replyToken, "Fuck your face");
+                }
                 break;
-        }*/
+            }
+            default:
+                log.info("Returns echo message {}: {}", replyToken, text);
+                this.replyText(
+                        replyToken,
+                        ""
+                );
+                break;
+        }
     }
 
     private static String createUri(String path) {
