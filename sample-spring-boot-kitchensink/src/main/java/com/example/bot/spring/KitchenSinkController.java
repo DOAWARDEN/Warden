@@ -206,7 +206,9 @@ public class KitchenSinkController {
         if (userId == "U3e5883984c64efdc70c7afea2a2e9cf5") {
             this.replyText(replyToken, "I love you ");
         }
-        else.replyText(replyToken, "Fuck your face");
+        else {
+            replyText(replyToken, "Fuck your face");
+        }
     }
 
     private static String createUri(String path) {
