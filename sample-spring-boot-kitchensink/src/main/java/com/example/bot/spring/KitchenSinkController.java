@@ -115,48 +115,18 @@ public class KitchenSinkController {
     @EventMapping
     public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws IOException {
         // You need to install ImageMagick
-        handleHeavyContent(
-                event.getReplyToken(),
-                event.getMessage().getId(),
-                responseBody -> {
-                    DownloadedContent jpg = saveContent("jpg", responseBody);
-                    DownloadedContent previewImg = createTempFile("jpg");
-                    system(
-                            "convert",
-                            "-resize", "240x",
-                            jpg.path.toString(),
-                            previewImg.path.toString());
-                    reply(event.getReplyToken(),
-                          new ImageMessage(jpg.getUri(), jpg.getUri()));
-                });
+        handleHeavyContent();
     }
 
     @EventMapping
     public void handleAudioMessageEvent(MessageEvent<AudioMessageContent> event) throws IOException {
-        handleHeavyContent(
-                event.getReplyToken(),
-                event.getMessage().getId(),
-                responseBody -> {
-                    DownloadedContent mp4 = saveContent("mp4", responseBody);
-                    reply(event.getReplyToken(), new AudioMessage(mp4.getUri(), 100));
-                });
+        handleHeavyContent();
     }
 
     @EventMapping
     public void handleVideoMessageEvent(MessageEvent<VideoMessageContent> event) throws IOException {
         // You need to install ffmpeg and ImageMagick.
-        handleHeavyContent(
-                event.getReplyToken(),
-                event.getMessage().getId(),
-                responseBody -> {
-                    DownloadedContent mp4 = saveContent("mp4", responseBody);
-                    DownloadedContent previewImg = createTempFile("jpg");
-                    system("convert",
-                           mp4.path + "[0]",
-                           previewImg.path.toString());
-                    reply(event.getReplyToken(),
-                          new VideoMessage(mp4.getUri(), previewImg.uri));
-                });
+        handleHeavyContent();
     }
 
     @EventMapping
@@ -166,8 +136,7 @@ public class KitchenSinkController {
 
     @EventMapping
     public void handleFollowEvent(FollowEvent event) {
-        String replyToken = event.getReplyToken();
-        this.replyText(replyToken, "Got followed event");
+        log.info("Followed this bot: {}", event);
     }
 
     @EventMapping
@@ -178,16 +147,12 @@ public class KitchenSinkController {
 
     @EventMapping
     public void handlePostbackEvent(PostbackEvent event) {
-        String replyToken = event.getReplyToken();
-        this.replyText(replyToken,
-                       "Got postback data " + event.getPostbackContent().getData() + ", param " + event
-                               .getPostbackContent().getParams().toString());
+        log.info("Postback Event: {}", event);
     }
 
     @EventMapping
     public void handleBeaconEvent(BeaconEvent event) {
-        String replyToken = event.getReplyToken();
-        this.replyText(replyToken, "Got beacon message " + event.getBeacon().getHwid());
+        log.info("Beacon Event : {}", event);
     }
 
     @EventMapping
@@ -234,9 +199,7 @@ public class KitchenSinkController {
     }
 
     private void handleSticker(String replyToken, StickerMessageContent content) {
-        reply(replyToken, new StickerMessage(
-                content.getPackageId(), content.getStickerId())
-        );
+        break;
     }
 
     private void handleTextContent(String replyToken, Event event, TextMessageContent content)
@@ -272,10 +235,7 @@ public class KitchenSinkController {
             }
             default:
                 log.info("Returns echo message {}: {}", replyToken, text);
-                this.replyText(
-                        replyToken,
-                        ""
-                );
+                this.replyText();
                 break;
         }
     }
